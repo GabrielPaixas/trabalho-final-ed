@@ -63,6 +63,7 @@ public class Jogo {
             if (escolha.equals("s")) {
                 System.out.println("Voce recebeu 4 moedas de transporte");
                 this.missao = "Vá até a cidade de Grand Duchy of Smalia e receba as luvas do poder.";
+                emMissao = 1;
                 moedasTransporte += 4;
             }
         } else if (numeroMissao == 2) {
@@ -74,6 +75,7 @@ public class Jogo {
             if (escolha.equals("s")) {
                 System.out.println("Voce recebeu 6 moedas de transporte");
                 this.missao = "Vá até a cidade de Principality of Kasya e receba as botas do poder.";
+                emMissao = 2;
                 moedasTransporte += 6;
             }
         } else if (numeroMissao == 3) {
@@ -85,15 +87,33 @@ public class Jogo {
             if (escolha.equals("s")) {
                 System.out.println("Voce recebeu 1 moeda de transporte");
                 this.missao = "Vá até Ubud e recebe a Glória dos Retornados.";
+                emMissao = 3;
                 moedasTransporte += 1;
             }
         }
     }
 
+    public void theEnd() {
+        clearTerminal();
+        infos();
+        System.out.println("\n\n\n");
+        if (moedasTransporte > 10) {
+            System.out.println("Apos uma jornada ardua e repleta de perigos, \nMaxwell finalmente chega a Nargumun, \ncarregando consigo " + moedasTransporte + " preciosas moedas. \nSeu feito extraordinario e reconhecido por todo o reino, \ne ele e coroado como o grande Rei de Nargumun. \nOs habitantes celebram sua chegada triunfal, \nprontos para seguir a lideranca sabia e corajosa de seu novo monarca.");
+            System.out.println("\n\nfim de jogo, obrigado por jogar.");
+        } else if (moedasTransporte >= 4) {
+            System.out.println("Apos enfrentar diversos desafios e superar grandes obstaculos, \nMaxwell finalmente chega a Nargumun com suas " + moedasTransporte + " moedas de transporte restantes. \nSua perseveranca e habilidade nao passam despercebidas, \ne ele e honrado com o titulo de Lorde de Nargumun. \nO povo, admirado por sua coragem, oferece-lhe respeito e lealdade, \nansiosos para seguir os passos de seu nobre governante.");
+            System.out.println("\n\nfim de jogo, obrigado por jogar.");
+        }else{
+            System.out.println("Apos uma exaustiva jornada, \nMaxwell chega a Nargumun com o coracao pesado e apenas algumas moedas remanescentes. \nSeus esforcos heroicos nao foram suficientes para acumular as riquezas necessarias, \ne a amarga realidade da derrota se instala. \nSem a conquista desejada, Maxwell e recebido pelo povo de Nargumun com olhares de compaixao misturados com decepcao. \nEle e aceito apenas como um servo da coroa, \num lembrete constante de sua falha em atingir as expectativas. \nO caminho a sua frente e incerto, \ne a sombra da derrota o acompanha enquanto ele enfrenta as consequencias de suas escolhas.");
+            System.out.println("\n\nfim de jogo, obrigado por jogar.");
+        }
+        System.exit(0);
+    }
+
     public void concluirMissao(int numeroMissao) {
         if (numeroMissao == 1) {
             System.out.println(
-                    "Voce recebeu 2 moedas de transporte\nVoce recebeu as luvas do poder, com isso o limiar de poder da sua joia foi aumentado em 2 pontos");
+                    "\nVoce recebeu 2 moedas de transporte\nVoce recebeu as luvas do poder, com isso o limiar de poder da sua joia foi aumentado em 2 pontos");
             moedasTransporte += 2;
             limiarJoia += 2;
             nivel += 2;
@@ -101,7 +121,7 @@ public class Jogo {
             missao = "";
         } else if (numeroMissao == 2) {
             System.out.println(
-                    "Voce recebeu 3 moedas de transporte\nVoce recebeu as botas do poder, com isso o limiar de poder da sua joia foi aumentado em 1 ponto");
+                    "\nVoce recebeu 3 moedas de transporte\nVoce recebeu as botas do poder, com isso o limiar de poder da sua joia foi aumentado em 1 ponto");
             moedasTransporte += 3;
             limiarJoia++;
             nivel += 2;
@@ -109,7 +129,7 @@ public class Jogo {
             missao = "";
         } else if (numeroMissao == 3) {
             System.out.println(
-                    "Voce conquistou a Gloria dos Retornados, com isso o limiar de poder da sua joia foi reduzido em 4 pontos\nVoce recebeu 10 moedas de transporte");
+                    "\nVoce conquistou a Gloria dos Retornados, com isso o limiar de poder da sua joia foi reduzido em 4 pontos\nVoce recebeu 10 moedas de transporte");
             moedasTransporte += 10;
             limiarJoia -= 4;
             nivel += 2;
@@ -127,8 +147,6 @@ public class Jogo {
                 cidadeAtual = cidadeDestino;
                 nivel++;
 
-                mercador();
-
                 if (poderJoia < 0) {
                     poderJoia = 0;
                 }
@@ -144,15 +162,25 @@ public class Jogo {
                     System.exit(0);
                 }
 
-                if (nomeCidade.equals("Kingdom of Kalb")) {
-                    missaoLocal(1);
+                if(nomeCidade.equals("Nargumun")){
+                    theEnd();
+                    return;
                 }
-                if (nomeCidade.equals("Defalsia")) {
-                    missaoLocal(2);
+
+                mercador();
+
+                if (emMissao == 0) {
+                    if (nomeCidade.equals("Kingdom of Kalb")) {
+                        missaoLocal(1);
+                    }
+                    if (nomeCidade.equals("Defalsia")) {
+                        missaoLocal(2);
+                    }
+                    if (nomeCidade.equals("Vunese Empire")) {
+                        missaoLocal(3);
+                    }
                 }
-                if (nomeCidade.equals("Vunese Empire")) {
-                    missaoLocal(3);
-                }
+
                 if (emMissao > 0) {
                     if (nomeCidade.equals("Grand Duchy of Smalia") && emMissao == 1) {
                         concluirMissao(1);
@@ -164,13 +192,16 @@ public class Jogo {
                         concluirMissao(3);
                     }
                 }
+
+                
             }
         }
     }
 
-    public void mercador(){
+    public void mercador() {
         clearTerminal();
-        System.out.println("Ola estranho...");
+        infos();
+        System.out.println("\n\nOla estranho...");
         System.out.print("De onde vens? ");
         scan.nextLine();
         System.out.print("Para onde vai? ");
@@ -178,7 +209,7 @@ public class Jogo {
         System.out.print("Quanto possui? ");
         int moedasInformadas = scan.nextInt();
         scan.nextLine();
-        if(moedasInformadas != moedasTransporte){
+        if (moedasInformadas != moedasTransporte) {
             clearTerminal();
             System.out.println("\nNao adianta mentir amigo, eu sei de tudo");
             System.out.println("Voce perdeu 2 moedas de transporte por mentir ao mercador\n");
@@ -188,29 +219,65 @@ public class Jogo {
         System.out.print("Deseja negociar? ");
         String resposta = scan.nextLine();
 
-        int distancia = calcularDistancia(cidadeAtual, vaiPara); 
+        int distancia = calcularDistancia(cidadeAtual, vaiPara);
 
-        if(moedasTransporte < 5 && distancia < 3 && resposta.equalsIgnoreCase("sim")){
+        if (moedasTransporte < 5 && distancia < 3 && resposta.equalsIgnoreCase("sim")) {
             clearTerminal();
-            System.out.println("\nNegocio fechado...\nEu levo uma moeda e voce ganha mais um de limiar!");
-            limiarJoia ++;
-            moedasTransporte --;
+            System.out.println("\nNegocio fechado...\nEu levo 1 moeda e voce ganha mais 1 de limiar!");
+            limiarJoia++;
+            moedasTransporte--;
+        } else if (moedasTransporte < 5 && distancia < 3 && resposta.equalsIgnoreCase("nao")) {
+            clearTerminal();
+            System.out.println("\nPessima ideia amigo...\nVocê perdeu 1 moeda!");
+            moedasTransporte--;
+        } else if (moedasTransporte < 5 && distancia >= 3 && resposta.equalsIgnoreCase("sim")) {
+            clearTerminal();
+            System.out.println("\nNegocio fechado...\nEu levo 1 moeda e voce ganha mais 2 de limiar!");
+            moedasTransporte--;
+            limiarJoia += 2;
+        } else if (moedasTransporte < 5 && distancia >= 3 && resposta.equalsIgnoreCase("nao")) {
+            clearTerminal();
+            System.out.println("\nBoa escolha amigo...\nVocê leva 2 moedas!");
+            moedasTransporte += 2;
+        } else if (moedasTransporte >= 5 && distancia < 3 && resposta.equalsIgnoreCase("sim")) {
+            clearTerminal();
+            System.out.println("\nNegocio fechado...\nEu levo 3 moedas e voce ganha mais 2 de limiar!");
+            moedasTransporte -= 3;
+            limiarJoia += 2;
+        } else if (moedasTransporte >= 5 && distancia < 3 && resposta.equalsIgnoreCase("nao")) {
+            clearTerminal();
+            System.out.println("\nPessima ideia amigo...\nVou levar 2 moedas!");
+            moedasTransporte -= 2;
+        } else if (moedasTransporte >= 5 && distancia >= 3 && resposta.equalsIgnoreCase("sim")) {
+            clearTerminal();
+            System.out.println("\nNegocio fechado...\nEu levo 1 moeda e voce ganha mais 3 de limiar!");
+            moedasTransporte--;
+            limiarJoia += 3;
+        } else if (moedasTransporte >= 5 && distancia >= 3 && resposta.equalsIgnoreCase("nao")) {
+            clearTerminal();
+            System.out.println("\nPessima ideia amigo...\nVou levar 3 moedas!");
+            moedasTransporte -= 3;
+            limiarJoia += 2;
         }
     }
 
-    public int calcularDistancia(Cidade origem, Cidade destino){
+    public int calcularDistancia(Cidade origem, Cidade destino) {
         int distancia;
         distancia = origem.getPoderDaCidade() + destino.getPoderDaCidade();
 
         return distancia;
     }
 
+    public void infos() {
+        System.out.println("\nNome: Maxwell             Raça: Humano             Nivel: " + nivel);
+        System.out.println("\nCidade Atual: " + cidadeAtual.getNome() + "\nPoder da joia: " + poderJoia
+                + "\nLimiar da joia: " + limiarJoia + "\nMoedas: " + moedasTransporte);
+        System.out.println("Missao Atual: " + missao);
+    }
+
     public void start() {
         while (true) {
-            System.out.println("\nNome: Maxwell             Raça: Humano             Nivel: " + nivel);
-            System.out.println("\nCidade Atual: " + cidadeAtual.getNome() + "\nPoder da joia: " + poderJoia
-                    + "\nLimiar da joia: " + limiarJoia + "\nMoedas: " + moedasTransporte);
-            System.out.println("Missao Atual: " + missao);
+            infos();
             System.out.println("\nPara onde deseja ir?");
             String proxCidade = scan.nextLine();
             viajar(proxCidade);
@@ -245,7 +312,7 @@ public class Jogo {
         jogo.adicionarVizinho("Kingdom of Legmod", "Protectorate of Dogrove");
         jogo.adicionarVizinho("Kingdom of Legmod", "Kingdom of Oldcalia");
         jogo.adicionarVizinho("Kingdom of Legmod", "Principality of Gritesthr");
-        
+
         jogo.adicionarVizinho("Principality of Nekikh", "Principality of Gritesthr");
 
         jogo.adicionarVizinho("Principality of Gritesthr", "Protectorate of Dogrove");
@@ -281,12 +348,10 @@ public class Jogo {
         jogo.adicionarVizinho("Chandir Sultanate", "Bun");
         jogo.adicionarVizinho("Chandir Sultanate", "Principality of Kasya");
 
-        jogo.definirCidadeAtual("Kingdom of Legmod");
+        jogo.definirCidadeAtual("Bun");
 
+        jogo.moedasTransporte = 3;
 
         jogo.start();
-
-        // jogo.viajar("Ubud");
-
     }
 }
