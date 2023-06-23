@@ -41,13 +41,15 @@ public class Cidade {
         return vizinhos;
     }
 
-    public void mostrarVizinhosEnumerados() {
+    //Funçao para listar os vizinhos da cidade atual
+    public void mostrarVizinhos() {
         for (int i = 0; i < vizinhos.size(); i++) {
             Cidade vizinho = vizinhos.get(i);
             System.out.println((i + 1) + ". " + vizinho.getNome() + "  [" + vizinho.getPoderDaCidade() + "]");
         }
     }
 
+    //Funçao para escolher o vizinho que deseja acessar
     public String escolherVizinho(int escolha) {
         Cidade escolhido = vizinhos.get(escolha - 1);
         return escolhido.getNome();

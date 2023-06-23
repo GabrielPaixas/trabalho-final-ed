@@ -28,20 +28,20 @@ public class Jogo {
         this.cidades = new HashMap<>();
     }
 
-    //Funçao para lipar o terminal durante os acontecimentos do jogo
+    // Funçao para lipar o terminal durante os acontecimentos do jogo
     public static void clearTerminal() {
-        //pesquisei por fora pra melhorar a experiencia do jogo
+        // pesquisei por fora pra melhorar a experiencia do jogo
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    //Funçao para adicionar cada cidade ao mapa
+    // Funçao para adicionar cada cidade ao mapa
     public void adicionarCidade(String nomeCidade, int poderDaCidade) {
         Cidade cidade = new Cidade(nomeCidade, poderDaCidade);
         cidades.put(nomeCidade, cidade);
     }
 
-    //Funçao para adicionar os vizinhos de cada cidade
+    // Funçao para adicionar os vizinhos de cada cidade
     public void adicionarVizinho(String nomeCidadeOrigem, String nomeCidadeDestino) {
         Cidade cidadeOrigem = cidades.get(nomeCidadeOrigem);
         Cidade cidadeDestino = cidades.get(nomeCidadeDestino);
@@ -52,7 +52,7 @@ public class Jogo {
         }
     }
 
-    //Funçao para devinir a cidade atual (criei para testes, porem decidi deixar)
+    // Funçao para devinir a cidade atual (criei para testes, porem decidi deixar)
     public void definirCidadeAtual(String nomeCidade) {
         if (cidades.containsKey(nomeCidade)) {
             cidadeAtual = cidades.get(nomeCidade);
@@ -61,7 +61,7 @@ public class Jogo {
         }
     }
 
-    //Funçao para mostar a lista de cidades do mapa para serem acessadas por numero
+    // Funçao para mostar a lista de cidades do mapa para serem acessadas por numero
     public void mostrarCidades() {
         int numero = 1;
         for (Map.Entry<String, Cidade> entry : cidades.entrySet()) {
@@ -72,7 +72,7 @@ public class Jogo {
         }
     }
 
-    //Funçao para acessar uma cidade pela numeraçao da lista anterior
+    // Funçao para acessar uma cidade pela numeraçao da lista anterior
     public Cidade escolherCidadePorNumero(int numeroCidade) {
         int numero = 1;
 
@@ -86,7 +86,7 @@ public class Jogo {
         return null;
     }
 
-    //Funçao para destacar uma missao caso exista na cidade atual
+    // Funçao para destacar uma missao caso exista na cidade atual
     public void missaoLocal(int numeroMissao) {
         if (numeroMissao == 1) {
             System.out.println("\nMISSAO LOCAL\nVá até a cidade de Grand Duchy of Smalia e receba as luvas do poder.");
@@ -127,7 +127,7 @@ public class Jogo {
         }
     }
 
-    //Funçao para destacar o fim do jogo ao chegar em Nargumun
+    // Funçao para destacar o fim do jogo ao chegar em Nargumun
     public void theEnd() {
         clearTerminal();
         infos();
@@ -152,7 +152,8 @@ public class Jogo {
         System.exit(0);
     }
 
-    //Funçao para destacar a conclusao da missao atual ao chegar na cidade de conclusao
+    // Funçao para destacar a conclusao da missao atual ao chegar na cidade de
+    // conclusao
     public void concluirMissao(int numeroMissao) {
         if (numeroMissao == 1) {
             System.out.println(
@@ -181,7 +182,7 @@ public class Jogo {
         }
     }
 
-    //Funçao para fazer viagens
+    // Funçao para fazer viagens
     public void viajar(String nomeCidade) {
         if (cidadeAtual != null) {
             Cidade cidadeDestino = cidades.get(nomeCidade);
@@ -242,19 +243,19 @@ public class Jogo {
         }
     }
 
-    //Funçao de controle do mercador
+    // Funçao de controle do mercador
     public void mercador() {
         clearTerminal();
         infos();
         System.out.println("\n\nOla estranho...");
         System.out.println("De onde vens? ");
-        cidadeAtual.mostrarVizinhosEnumerados();
+        cidadeAtual.mostrarVizinhos();
         int escolha1 = scan.nextInt();
         scan.nextLine();
         String vemDe = cidadeAtual.escolherVizinho(escolha1);
 
         System.out.println("Para onde vai? ");
-        cidadeAtual.mostrarVizinhosEnumerados();
+        cidadeAtual.mostrarVizinhos();
         int escolha2 = scan.nextInt();
         scan.nextLine();
         String vaiPara = cidadeAtual.escolherVizinho(escolha2);
@@ -315,7 +316,8 @@ public class Jogo {
         }
     }
 
-    //Funçao para calcular a distancia de uma cidade para otura(sendo distancia o poder somado do trajeto)
+    // Funçao para calcular a distancia de uma cidade para otura(sendo distancia o
+    // poder somado do trajeto)
     public int calcularDistancia(String nomeCidadeOrigem, String nomeCidadeDestino) {
         if (!cidades.containsKey(nomeCidadeOrigem) || !cidades.containsKey(nomeCidadeDestino)) {
             return -1;
@@ -353,7 +355,7 @@ public class Jogo {
         return -1;
     }
 
-    //Funçao para exibir as informaçoes do jogador na tela
+    // Funçao para exibir as informaçoes do jogador na tela
     public void infos() {
         System.out.println("\n------------------------------------------------------------------");
         System.out.println("   Nome: Maxwell             Raça: Humano             Nivel: " + nivel);
@@ -362,7 +364,7 @@ public class Jogo {
         System.out.println("   Missao Atual: " + missao);
     }
 
-    //Funçao para iniciar o jogo
+    // Funçao para iniciar o jogo
     public void start() {
         adicionarCidade("Ubud", 0);
         adicionarCidade("Kingdom of Legmod", 2);
@@ -423,10 +425,10 @@ public class Jogo {
 
         adicionarVizinho("Chandir Sultanate", "Vunese Empire");
         adicionarVizinho("Chandir Sultanate", "Bun");
-        adicionarVizinho("Chandir Sultanate", "Principality of Kasya");        
-        
+        adicionarVizinho("Chandir Sultanate", "Principality of Kasya");
+
         definirCidadeAtual("Ubud");
-        
+
         clearTerminal();
         while (true) {
             infos();
@@ -435,7 +437,7 @@ public class Jogo {
             scan.nextLine();
             if (escolha1 == 1) {
                 System.out.println("\nPara onde deseja ir?");
-                cidadeAtual.mostrarVizinhosEnumerados();
+                cidadeAtual.mostrarVizinhos();
                 int escolha2 = scan.nextInt();
                 scan.nextLine();
                 String proxCidade = cidadeAtual.escolherVizinho(escolha2);
