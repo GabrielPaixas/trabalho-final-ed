@@ -52,7 +52,7 @@ public class Jogo {
         }
     }
 
-    // Funçao para devinir a cidade atual (criei para testes, porem decidi deixar)
+    // Funçao para devinir a cidade atual (usada para iniciar o jogo em Ubud)
     public void definirCidadeAtual(String nomeCidade) {
         if (cidades.containsKey(nomeCidade)) {
             cidadeAtual = cidades.get(nomeCidade);
