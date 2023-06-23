@@ -4,6 +4,7 @@ import java.util.List;
 public class Cidade {
     private String nome;
     private int poderDaCidade;
+    private int distancia;
     private List<Cidade> vizinhos;
 
     public Cidade(String nome, int poderDaCidade) {
@@ -16,12 +17,20 @@ public class Cidade {
         return nome;
     }
 
-    public void setNome(String nome){
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
     public int getPoderDaCidade() {
         return poderDaCidade;
+    }
+
+    public int getDistancia() {
+        return this.distancia;
+    }
+
+    public void setDistancia(int distancia) {
+        this.distancia = distancia;
     }
 
     public void adicionarVizinho(Cidade cidadeVizinha) {
@@ -31,4 +40,17 @@ public class Cidade {
     public List<Cidade> getVizinhos() {
         return vizinhos;
     }
+
+    public void mostrarVizinhosEnumerados() {
+        for (int i = 0; i < vizinhos.size(); i++) {
+            Cidade vizinho = vizinhos.get(i);
+            System.out.println((i + 1) + ". " + vizinho.getNome() + "  [" + vizinho.getPoderDaCidade() + "]");
+        }
+    }
+
+    public String escolherVizinho(int escolha) {
+        Cidade escolhido = vizinhos.get(escolha - 1);
+        return escolhido.getNome();
+    }
+
 }

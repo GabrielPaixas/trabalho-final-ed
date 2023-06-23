@@ -1,6 +1,10 @@
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Jogo {
     private int poderJoia;
@@ -24,17 +28,20 @@ public class Jogo {
         this.cidades = new HashMap<>();
     }
 
+    //Funçao para lipar o terminal durante os acontecimentos do jogo
     public static void clearTerminal() {
-        // Sequência de escape ANSI para limpar o terminal
+        //pesquisei por fora pra melhorar a experiencia do jogo
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
+    //Funçao para adicionar cada cidade ao mapa
     public void adicionarCidade(String nomeCidade, int poderDaCidade) {
         Cidade cidade = new Cidade(nomeCidade, poderDaCidade);
         cidades.put(nomeCidade, cidade);
     }
 
+    //Funçao para adicionar os vizinhos de cada cidade
     public void adicionarVizinho(String nomeCidadeOrigem, String nomeCidadeDestino) {
         Cidade cidadeOrigem = cidades.get(nomeCidadeOrigem);
         Cidade cidadeDestino = cidades.get(nomeCidadeDestino);
@@ -45,6 +52,7 @@ public class Jogo {
         }
     }
 
+    //Funçao para devinir a cidade atual (criei para testes, porem decidi deixar)
     public void definirCidadeAtual(String nomeCidade) {
         if (cidades.containsKey(nomeCidade)) {
             cidadeAtual = cidades.get(nomeCidade);
@@ -53,6 +61,32 @@ public class Jogo {
         }
     }
 
+    //Funçao para mostar a lista de cidades do mapa para serem acessadas por numero
+    public void mostrarCidades() {
+        int numero = 1;
+        for (Map.Entry<String, Cidade> entry : cidades.entrySet()) {
+            String nomeCidade = entry.getKey();
+            Cidade cidade = entry.getValue();
+            System.out.println(numero + ". " + nomeCidade);
+            numero++;
+        }
+    }
+
+    //Funçao para acessar uma cidade pela numeraçao da lista anterior
+    public Cidade escolherCidadePorNumero(int numeroCidade) {
+        int numero = 1;
+
+        for (Map.Entry<String, Cidade> entry : cidades.entrySet()) {
+            if (numero == numeroCidade) {
+                return entry.getValue();
+            }
+            numero++;
+        }
+
+        return null;
+    }
+
+    //Funçao para destacar uma missao caso exista na cidade atual
     public void missaoLocal(int numeroMissao) {
         if (numeroMissao == 1) {
             System.out.println("\nMISSAO LOCAL\nVá até a cidade de Grand Duchy of Smalia e receba as luvas do poder.");
@@ -93,23 +127,32 @@ public class Jogo {
         }
     }
 
+    //Funçao para destacar o fim do jogo ao chegar em Nargumun
     public void theEnd() {
         clearTerminal();
         infos();
-        System.out.println("\n\n\n");
+        System.out.println("\n\n");
         if (moedasTransporte > 10) {
-            System.out.println("Apos uma jornada ardua e repleta de perigos, \nMaxwell finalmente chega a Nargumun, \ncarregando consigo " + moedasTransporte + " preciosas moedas. \nSeu feito extraordinario e reconhecido por todo o reino, \ne ele e coroado como o grande Rei de Nargumun. \nOs habitantes celebram sua chegada triunfal, \nprontos para seguir a lideranca sabia e corajosa de seu novo monarca.");
+            System.out.println(
+                    "Apos uma jornada ardua e repleta de perigos, \nMaxwell finalmente chega a Nargumun, \ncarregando consigo "
+                            + moedasTransporte
+                            + " preciosas moedas. \nSeu feito extraordinario e reconhecido por todo o reino, \ne ele e coroado como o grande Rei de Nargumun. \nOs habitantes celebram sua chegada triunfal, \nprontos para seguir a lideranca sabia e corajosa de seu novo monarca.");
             System.out.println("\n\nfim de jogo, obrigado por jogar.");
         } else if (moedasTransporte >= 4) {
-            System.out.println("Apos enfrentar diversos desafios e superar grandes obstaculos, \nMaxwell finalmente chega a Nargumun com suas " + moedasTransporte + " moedas de transporte restantes. \nSua perseveranca e habilidade nao passam despercebidas, \ne ele e honrado com o titulo de Lorde de Nargumun. \nO povo, admirado por sua coragem, oferece-lhe respeito e lealdade, \nansiosos para seguir os passos de seu nobre governante.");
+            System.out.println(
+                    "Apos enfrentar diversos desafios e superar grandes obstaculos, \nMaxwell finalmente chega a Nargumun com suas "
+                            + moedasTransporte
+                            + " moedas de transporte restantes. \nSua perseveranca e habilidade nao passam despercebidas, \ne ele e honrado com o titulo de Lorde de Nargumun. \nO povo, admirado por sua coragem, oferece-lhe respeito e lealdade, \nansiosos para seguir os passos de seu nobre governante.");
             System.out.println("\n\nfim de jogo, obrigado por jogar.");
-        }else{
-            System.out.println("Apos uma exaustiva jornada, \nMaxwell chega a Nargumun com o coracao pesado e apenas algumas moedas remanescentes. \nSeus esforcos heroicos nao foram suficientes para acumular as riquezas necessarias, \ne a amarga realidade da derrota se instala. \nSem a conquista desejada, Maxwell e recebido pelo povo de Nargumun com olhares de compaixao misturados com decepcao. \nEle e aceito apenas como um servo da coroa, \num lembrete constante de sua falha em atingir as expectativas. \nO caminho a sua frente e incerto, \ne a sombra da derrota o acompanha enquanto ele enfrenta as consequencias de suas escolhas.");
+        } else {
+            System.out.println(
+                    "Apos uma exaustiva jornada, \nMaxwell chega a Nargumun com o coracao pesado e apenas algumas moedas remanescentes. \nSeus esforcos heroicos nao foram suficientes para acumular as riquezas necessarias, \ne a amarga realidade da derrota se instala. \nSem a conquista desejada, Maxwell e recebido pelo povo de Nargumun com olhares de compaixao misturados com decepcao. \nEle e aceito apenas como um servo da coroa, \num lembrete constante de sua falha em atingir as expectativas. \nO caminho a sua frente e incerto, \ne a sombra da derrota o acompanha enquanto ele enfrenta as consequencias de suas escolhas.");
             System.out.println("\n\nfim de jogo, obrigado por jogar.");
         }
         System.exit(0);
     }
 
+    //Funçao para destacar a conclusao da missao atual ao chegar na cidade de conclusao
     public void concluirMissao(int numeroMissao) {
         if (numeroMissao == 1) {
             System.out.println(
@@ -138,13 +181,16 @@ public class Jogo {
         }
     }
 
+    //Funçao para fazer viagens
     public void viajar(String nomeCidade) {
         if (cidadeAtual != null) {
             Cidade cidadeDestino = cidades.get(nomeCidade);
             if (cidadeAtual.getVizinhos().contains(cidadeDestino)) {
                 int poderGanho = cidadeDestino.getPoderDaCidade();
+                Cidade temp = cidadeAtual;
                 poderJoia += poderGanho;
                 cidadeAtual = cidadeDestino;
+                moedasTransporte--;
                 nivel++;
 
                 if (poderJoia < 0) {
@@ -152,17 +198,16 @@ public class Jogo {
                 }
 
                 if (poderJoia > limiarJoia) {
-                    System.out.println("Maxwell foi de caixa! A joia sobrecarregou!");
+                    System.out.println("A joia sobrecarregou! Maxwell foi desintegrado");
                     System.exit(0);
                 }
 
-                moedasTransporte--;
                 if (moedasTransporte < 0) {
-                    System.out.println("Maxwell foi de arrasta! Acabaram as moedas");
+                    System.out.println("Acabaram as moedas! Maxwell virou um escravo de " + temp.getNome());
                     System.exit(0);
                 }
 
-                if(nomeCidade.equals("Nargumun")){
+                if (nomeCidade.equals("Nargumun")) {
                     theEnd();
                     return;
                 }
@@ -193,19 +238,27 @@ public class Jogo {
                     }
                 }
 
-                
             }
         }
     }
 
+    //Funçao de controle do mercador
     public void mercador() {
         clearTerminal();
         infos();
         System.out.println("\n\nOla estranho...");
-        System.out.print("De onde vens? ");
+        System.out.println("De onde vens? ");
+        cidadeAtual.mostrarVizinhosEnumerados();
+        int escolha1 = scan.nextInt();
         scan.nextLine();
-        System.out.print("Para onde vai? ");
-        Cidade vaiPara = cidades.get(scan.nextLine());
+        String vemDe = cidadeAtual.escolherVizinho(escolha1);
+
+        System.out.println("Para onde vai? ");
+        cidadeAtual.mostrarVizinhosEnumerados();
+        int escolha2 = scan.nextInt();
+        scan.nextLine();
+        String vaiPara = cidadeAtual.escolherVizinho(escolha2);
+
         System.out.print("Quanto possui? ");
         int moedasInformadas = scan.nextInt();
         scan.nextLine();
@@ -216,44 +269,45 @@ public class Jogo {
             moedasTransporte -= 2;
             return;
         }
-        System.out.print("Deseja negociar? ");
+
+        System.out.print("Deseja negociar? [s/n]");
         String resposta = scan.nextLine();
 
-        int distancia = calcularDistancia(cidadeAtual, vaiPara);
+        int distancia = calcularDistancia(vemDe, vaiPara);
 
-        if (moedasTransporte < 5 && distancia < 3 && resposta.equalsIgnoreCase("sim")) {
+        if (moedasTransporte < 5 && distancia < 3 && resposta.equalsIgnoreCase("s")) {
             clearTerminal();
             System.out.println("\nNegocio fechado...\nEu levo 1 moeda e voce ganha mais 1 de limiar!");
             limiarJoia++;
             moedasTransporte--;
-        } else if (moedasTransporte < 5 && distancia < 3 && resposta.equalsIgnoreCase("nao")) {
+        } else if (moedasTransporte < 5 && distancia < 3 && resposta.equalsIgnoreCase("n")) {
             clearTerminal();
             System.out.println("\nPessima ideia amigo...\nVocê perdeu 1 moeda!");
             moedasTransporte--;
-        } else if (moedasTransporte < 5 && distancia >= 3 && resposta.equalsIgnoreCase("sim")) {
+        } else if (moedasTransporte < 5 && distancia >= 3 && resposta.equalsIgnoreCase("s")) {
             clearTerminal();
             System.out.println("\nNegocio fechado...\nEu levo 1 moeda e voce ganha mais 2 de limiar!");
             moedasTransporte--;
             limiarJoia += 2;
-        } else if (moedasTransporte < 5 && distancia >= 3 && resposta.equalsIgnoreCase("nao")) {
+        } else if (moedasTransporte < 5 && distancia >= 3 && resposta.equalsIgnoreCase("n")) {
             clearTerminal();
             System.out.println("\nBoa escolha amigo...\nVocê leva 2 moedas!");
             moedasTransporte += 2;
-        } else if (moedasTransporte >= 5 && distancia < 3 && resposta.equalsIgnoreCase("sim")) {
+        } else if (moedasTransporte >= 5 && distancia < 3 && resposta.equalsIgnoreCase("s")) {
             clearTerminal();
             System.out.println("\nNegocio fechado...\nEu levo 3 moedas e voce ganha mais 2 de limiar!");
             moedasTransporte -= 3;
             limiarJoia += 2;
-        } else if (moedasTransporte >= 5 && distancia < 3 && resposta.equalsIgnoreCase("nao")) {
+        } else if (moedasTransporte >= 5 && distancia < 3 && resposta.equalsIgnoreCase("n")) {
             clearTerminal();
             System.out.println("\nPessima ideia amigo...\nVou levar 2 moedas!");
             moedasTransporte -= 2;
-        } else if (moedasTransporte >= 5 && distancia >= 3 && resposta.equalsIgnoreCase("sim")) {
+        } else if (moedasTransporte >= 5 && distancia >= 3 && resposta.equalsIgnoreCase("s")) {
             clearTerminal();
             System.out.println("\nNegocio fechado...\nEu levo 1 moeda e voce ganha mais 3 de limiar!");
             moedasTransporte--;
             limiarJoia += 3;
-        } else if (moedasTransporte >= 5 && distancia >= 3 && resposta.equalsIgnoreCase("nao")) {
+        } else if (moedasTransporte >= 5 && distancia >= 3 && resposta.equalsIgnoreCase("n")) {
             clearTerminal();
             System.out.println("\nPessima ideia amigo...\nVou levar 3 moedas!");
             moedasTransporte -= 3;
@@ -261,97 +315,140 @@ public class Jogo {
         }
     }
 
-    public int calcularDistancia(Cidade origem, Cidade destino) {
-        int distancia;
-        distancia = origem.getPoderDaCidade() + destino.getPoderDaCidade();
+    //Funçao para calcular a distancia de uma cidade para otura(sendo distancia o poder somado do trajeto)
+    public int calcularDistancia(String nomeCidadeOrigem, String nomeCidadeDestino) {
+        if (!cidades.containsKey(nomeCidadeOrigem) || !cidades.containsKey(nomeCidadeDestino)) {
+            return -1;
+        }
 
-        return distancia;
+        Cidade cidadeOrigem = cidades.get(nomeCidadeOrigem);
+        Cidade cidadeDestino = cidades.get(nomeCidadeDestino);
+
+        if (cidadeOrigem.equals(cidadeDestino)) {
+            return cidadeOrigem.getPoderDaCidade();
+        }
+
+        Queue<Cidade> fila = new LinkedList<>();
+        Set<Cidade> visitadas = new HashSet<>();
+
+        fila.offer(cidadeOrigem);
+        visitadas.add(cidadeOrigem);
+
+        while (!fila.isEmpty()) {
+            Cidade cidadeAtual = fila.poll();
+
+            for (Cidade vizinho : cidadeAtual.getVizinhos()) {
+                if (!visitadas.contains(vizinho)) {
+                    visitadas.add(vizinho);
+                    vizinho.setDistancia(cidadeAtual.getDistancia() + vizinho.getPoderDaCidade());
+                    fila.offer(vizinho);
+
+                    if (vizinho.equals(cidadeDestino)) {
+                        return vizinho.getDistancia();
+                    }
+                }
+            }
+        }
+
+        return -1;
     }
 
+    //Funçao para exibir as informaçoes do jogador na tela
     public void infos() {
-        System.out.println("\nNome: Maxwell             Raça: Humano             Nivel: " + nivel);
-        System.out.println("\nCidade Atual: " + cidadeAtual.getNome() + "\nPoder da joia: " + poderJoia
-                + "\nLimiar da joia: " + limiarJoia + "\nMoedas: " + moedasTransporte);
-        System.out.println("Missao Atual: " + missao);
+        System.out.println("\n------------------------------------------------------------------");
+        System.out.println("   Nome: Maxwell             Raça: Humano             Nivel: " + nivel);
+        System.out.println("\n   Cidade Atual: " + cidadeAtual.getNome() + "\n   Poder da joia: " + poderJoia
+                + "\n   Limiar da joia: " + limiarJoia + "\n   Moedas: " + moedasTransporte);
+        System.out.println("   Missao Atual: " + missao);
     }
 
+    //Funçao para iniciar o jogo
     public void start() {
+        adicionarCidade("Ubud", 0);
+        adicionarCidade("Kingdom of Legmod", 2);
+        adicionarCidade("Principality of Nekikh", 1);
+        adicionarCidade("Principality of Gritesthr", 5);
+        adicionarCidade("Protectorate of Dogrove", 3);
+        adicionarCidade("Kingdom of Lastwatch", -2);
+        adicionarCidade("Grand Duchy of Smalia", 1);
+        adicionarCidade("Kingdom of Oldcalia", 4);
+        adicionarCidade("Kingdom of Kalb", 2);
+        adicionarCidade("Aymar League", 1);
+        adicionarCidade("Defalsia", -3);
+        adicionarCidade("Vunese Empire", 0);
+        adicionarCidade("Principality of Karhora", -2);
+        adicionarCidade("Chandir Sultanate", 1);
+        adicionarCidade("Bun", 5);
+        adicionarCidade("Principality of Kasya", -7);
+        adicionarCidade("Nargumun", 0);
+
+        adicionarVizinho("Ubud", "Kingdom of Legmod");
+        adicionarVizinho("Ubud", "Principality of Nekikh");
+
+        adicionarVizinho("Kingdom of Legmod", "Principality of Nekikh");
+        adicionarVizinho("Kingdom of Legmod", "Protectorate of Dogrove");
+        adicionarVizinho("Kingdom of Legmod", "Kingdom of Oldcalia");
+        adicionarVizinho("Kingdom of Legmod", "Principality of Gritesthr");
+
+        adicionarVizinho("Principality of Nekikh", "Principality of Gritesthr");
+
+        adicionarVizinho("Principality of Gritesthr", "Protectorate of Dogrove");
+        adicionarVizinho("Principality of Gritesthr", "Kingdom of Lastwatch");
+
+        adicionarVizinho("Protectorate of Dogrove", "Kingdom of Lastwatch");
+        adicionarVizinho("Protectorate of Dogrove", "Kingdom of Oldcalia");
+
+        adicionarVizinho("Kingdom of Lastwatch", "Grand Duchy of Smalia");
+
+        adicionarVizinho("Grand Duchy of Smalia", "Kingdom of Oldcalia");
+
+        adicionarVizinho("Kingdom of Oldcalia", "Defalsia");
+        adicionarVizinho("Kingdom of Oldcalia", "Aymar League");
+        adicionarVizinho("Kingdom of Oldcalia", "Kingdom of Kalb");
+
+        adicionarVizinho("Defalsia", "Aymar League");
+
+        adicionarVizinho("Aymar League", "Principality of Karhora");
+        adicionarVizinho("Aymar League", "Nargumun");
+        adicionarVizinho("Aymar League", "Bun");
+        adicionarVizinho("Aymar League", "Chandir Sultanate");
+        adicionarVizinho("Aymar League", "Vunese Empire");
+        adicionarVizinho("Aymar League", "Kingdom of Kalb");
+
+        adicionarVizinho("Principality of Karhora", "Nargumun");
+
+        adicionarVizinho("Nargumun", "Bun");
+
+        adicionarVizinho("Kingdom of Kalb", "Vunese Empire");
+
+        adicionarVizinho("Chandir Sultanate", "Vunese Empire");
+        adicionarVizinho("Chandir Sultanate", "Bun");
+        adicionarVizinho("Chandir Sultanate", "Principality of Kasya");        
+        
+        definirCidadeAtual("Ubud");
+        
+        clearTerminal();
         while (true) {
             infos();
-            System.out.println("\nPara onde deseja ir?");
-            String proxCidade = scan.nextLine();
-            viajar(proxCidade);
+            System.out.println("O que desejas?\n1. Viajar\n2. Calcular Custo de Viagem");
+            int escolha1 = scan.nextInt();
+            scan.nextLine();
+            if (escolha1 == 1) {
+                System.out.println("\nPara onde deseja ir?");
+                cidadeAtual.mostrarVizinhosEnumerados();
+                int escolha2 = scan.nextInt();
+                scan.nextLine();
+                String proxCidade = cidadeAtual.escolherVizinho(escolha2);
+                viajar(proxCidade);
+            } else if (escolha1 == 2) {
+                System.out.println("\nDeseja calcular o custo para qual cidade?\n");
+                mostrarCidades();
+                int numCidade = scan.nextInt();
+                scan.nextLine();
+                Cidade cidadeEscolhida = escolherCidadePorNumero(numCidade);
+                System.out.println("\nA distancia minima daqui para " + cidadeEscolhida.getNome() + " é de "
+                        + calcularDistancia(cidadeAtual.getNome(), cidadeEscolhida.getNome()) + "\n");
+            }
         }
-    }
-
-    public static void main(String[] args) {
-        Jogo jogo = new Jogo();
-
-        jogo.adicionarCidade("Ubud", 0);
-        jogo.adicionarCidade("Kingdom of Legmod", 2);
-        jogo.adicionarCidade("Principality of Nekikh", 1);
-        jogo.adicionarCidade("Principality of Gritesthr", 5);
-        jogo.adicionarCidade("Protectorate of Dogrove", 3);
-        jogo.adicionarCidade("Kingdom of Lastwatch", -2);
-        jogo.adicionarCidade("Grand Duchy of Smalia", 1);
-        jogo.adicionarCidade("Kingdom of Oldcalia", 4);
-        jogo.adicionarCidade("Kingdom of Kalb", 2);
-        jogo.adicionarCidade("Aymar League", 1);
-        jogo.adicionarCidade("Defalsia", -3);
-        jogo.adicionarCidade("Vunese Empire", 0);
-        jogo.adicionarCidade("Principality of Karhora", -2);
-        jogo.adicionarCidade("Chandir Sultanate", 1);
-        jogo.adicionarCidade("Bun", 5);
-        jogo.adicionarCidade("Principality of Kasya", -7);
-        jogo.adicionarCidade("Nargumun", 0);
-
-        jogo.adicionarVizinho("Ubud", "Kingdom of Legmod");
-        jogo.adicionarVizinho("Ubud", "Principality of Nekikh");
-
-        jogo.adicionarVizinho("Kingdom of Legmod", "Principality of Nekikh");
-        jogo.adicionarVizinho("Kingdom of Legmod", "Protectorate of Dogrove");
-        jogo.adicionarVizinho("Kingdom of Legmod", "Kingdom of Oldcalia");
-        jogo.adicionarVizinho("Kingdom of Legmod", "Principality of Gritesthr");
-
-        jogo.adicionarVizinho("Principality of Nekikh", "Principality of Gritesthr");
-
-        jogo.adicionarVizinho("Principality of Gritesthr", "Protectorate of Dogrove");
-        jogo.adicionarVizinho("Principality of Gritesthr", "Kingdom of Lastwatch");
-
-        jogo.adicionarVizinho("Protectorate of Dogrove", "Kingdom of Lastwatch");
-        jogo.adicionarVizinho("Protectorate of Dogrove", "Kingdom of Oldcalia");
-
-        jogo.adicionarVizinho("Kingdom of Lastwatch", "Grand Duchy of Smalia");
-
-        jogo.adicionarVizinho("Grand Duchy of Smalia", "Kingdom of Oldcalia");
-
-        jogo.adicionarVizinho("Kingdom of Oldcalia", "Defalsia");
-        jogo.adicionarVizinho("Kingdom of Oldcalia", "Aymar League");
-        jogo.adicionarVizinho("Kingdom of Oldcalia", "Kingdom of Kalb");
-
-        jogo.adicionarVizinho("Defalsia", "Aymar League");
-
-        jogo.adicionarVizinho("Aymar League", "Principality of Karhora");
-        jogo.adicionarVizinho("Aymar League", "Nargumun");
-        jogo.adicionarVizinho("Aymar League", "Bun");
-        jogo.adicionarVizinho("Aymar League", "Chandir Sultanate");
-        jogo.adicionarVizinho("Aymar League", "Vunese Empire");
-        jogo.adicionarVizinho("Aymar League", "Kingdom of Kalb");
-
-        jogo.adicionarVizinho("Principality of Karhora", "Nargumun");
-
-        jogo.adicionarVizinho("Nargumun", "Bun");
-
-        jogo.adicionarVizinho("Kingdom of Kalb", "Vunese Empire");
-
-        jogo.adicionarVizinho("Chandir Sultanate", "Vunese Empire");
-        jogo.adicionarVizinho("Chandir Sultanate", "Bun");
-        jogo.adicionarVizinho("Chandir Sultanate", "Principality of Kasya");
-
-        jogo.definirCidadeAtual("Bun");
-
-        jogo.moedasTransporte = 3;
-
-        jogo.start();
     }
 }
