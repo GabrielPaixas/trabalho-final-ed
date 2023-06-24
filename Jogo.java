@@ -364,8 +364,8 @@ public class Jogo {
         System.out.println("   Missao Atual: " + missao);
     }
 
-    // Funçao para iniciar o jogo
-    public void start() {
+    //Funçao para gerar as cidades e ligaçoes do mapa
+    public void criarMapa(){
         adicionarCidade("Ubud", 0);
         adicionarCidade("Kingdom of Legmod", 2);
         adicionarCidade("Principality of Nekikh", 1);
@@ -426,13 +426,18 @@ public class Jogo {
         adicionarVizinho("Chandir Sultanate", "Vunese Empire");
         adicionarVizinho("Chandir Sultanate", "Bun");
         adicionarVizinho("Chandir Sultanate", "Principality of Kasya");
+    }
+
+    // Funçao para iniciar o jogo
+    public void start() {
+        criarMapa();
 
         definirCidadeAtual("Ubud");
 
         clearTerminal();
         while (true) {
             infos();
-            System.out.println("O que desejas?\n1. Viajar\n2. Calcular Custo de Viagem");
+            System.out.println("\nO que desejas?\n1. Viajar\n2. Calcular Custo de Viagem");
             int escolha1 = scan.nextInt();
             scan.nextLine();
             if (escolha1 == 1) {
