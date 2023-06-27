@@ -1,4 +1,6 @@
-# trabalho-final-ed
+# Trabalho Final para diciplina de Estrutura de Dados
+
+# Documentação
 
 O código se trata de uma implementação de um jogo de aventura controlado por entradas de texto e é baseado no problema do caixeiro viajante, ele consiste em duas classes principais: “Cidade” e “Jogo”.
 
