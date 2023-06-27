@@ -66,7 +66,6 @@ public class Jogo {
         int numero = 1;
         for (Map.Entry<String, Cidade> entry : cidades.entrySet()) {
             String nomeCidade = entry.getKey();
-            Cidade cidade = entry.getValue();
             System.out.println(numero + ". " + nomeCidade);
             numero++;
         }
@@ -401,6 +400,7 @@ public class Jogo {
         adicionarVizinho("Protectorate of Dogrove", "Kingdom of Oldcalia");
 
         adicionarVizinho("Kingdom of Lastwatch", "Grand Duchy of Smalia");
+        adicionarVizinho("Kingdom of Lastwatch", "Kingdom of Oldcalia");
 
         adicionarVizinho("Grand Duchy of Smalia", "Kingdom of Oldcalia");
 
@@ -453,6 +453,7 @@ public class Jogo {
                 int numCidade = scan.nextInt();
                 scan.nextLine();
                 Cidade cidadeEscolhida = escolherCidadePorNumero(numCidade);
+                clearTerminal();
                 System.out.println("\nA distancia minima daqui para " + cidadeEscolhida.getNome() + " é de "
                         + calcularDistancia(cidadeAtual.getNome(), cidadeEscolhida.getNome()) + "\n");
             }
